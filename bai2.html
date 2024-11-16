@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bai3.2</title>
+</head>
+<body>
+    <p>Nhấn vào nút dưới đây để lấy tọa độ của bạn</p>
+    <button onclick="getLocation()">Dịnh vị</button>
+    <p id="demo"></p>
+    <div id="mapholder"></div>
+    <script>
+        var x = document.getElementById("demo");
+        function getLocation(){
+            if (navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                x.innerHTML = "Trình duyệt của bạn không hỗ trợ.";
+            }
+        }
+
+        function showPosition(position){
+            x.innerHTML = "Vĩ độ: " + position.coords.latitude + "<br>Kinh độ: " + position.coords.longitude;
+            
+            var latlon = position.coords.latitude + "," + position.coords.longitude;
+            var img_url = "https://maps.googleapis.com/maps/api/staticmap?center=" + latlon + "&zoom=14&size=400x300&sensor=false";
+            document.getElementById("mapholder").innerHTML = "<img src='" + img_url + "'>";
+        }
+
+        function showError(error){
+            switch (error.code){
+                case error.PERMISSION_DENIED:
+                    x.innerHTML = "Người dùng từ chối cấp quyền định vị.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    x.innerHTML = "Không có thông tin vị trí.";
+                    break;
+                case error.TIMEOUT:
+                    x.innerHTML = "Hết thời gian gửi yêu cầu định vị.";
+                    break;
+                case error.UNKNOWN_ERROR:
+                    x.innerHTML = "Lỗi chưa sác định.";
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
